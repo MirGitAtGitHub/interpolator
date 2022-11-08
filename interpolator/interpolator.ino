@@ -3,25 +3,13 @@
 Servo interPolateServo;
 //Initialize the max amount of steps
 float stepList[250];
-//Here you will set the steps to take
-int steps = 249;
-//Here you will set the start and end points
-int startPoint = 0;
-int endPoint = 180;
 void setup() {
   interPolateServo.attach(3);
-  interPolateServo.write(startPoint);
-  delay(1000);
-  /*Calling the Interpolate function with the parameters being a) start point b) end point and c) the amount of steps fetched
-  from the steps variable*/
-  Interpolate(startPoint,endPoint,steps);
-  //Begin interpolation result printing to serial
   Serial.begin(9600);
-  //Run through the steps and print them to serial
-  for (int i = 0; i < steps + 1; i++) {
-    Serial.println(stepList[i]);
-    interPolateServo.write(stepList[i]);
-  }
+  Interpolate(0,45,25);
+  Interpolate(45,90,25);
+  Interpolate(90,135,25);
+  Interpolate(135,180,25);
 }
 void loop() {}
 //Create the Interpolate function
@@ -44,5 +32,12 @@ void Interpolate(float startPoint,float endPoint,int steps) {
     stepList[stepIndex] = currentStep;
     //Step done, decrease by one loop, starts over
     stepCounter -= 1;
+  }
+  interPolateServo.write(startPoint);
+  delay(1000); 
+  //Run through the steps and print them to serial
+  for (int i = 0; i < steps + 1; i++) {
+    Serial.println(stepList[i]);
+    interPolateServo.write(stepList[i]);
   }
 }
